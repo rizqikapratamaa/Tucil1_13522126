@@ -1,50 +1,46 @@
-def breach_protocol(matrix, sequences, buffer_size):
-    rewards = {tuple(seq): weight for seq, weight in sequences}
-    best_path, best_reward = [], 0
+import time
 
-    # generate all possible paths
-    paths = generate_paths(matrix, buffer_size)
+def generate_all_paths(matrix, buffer_size):
+    if buffer_size == 1:
+        return [[(i, j)] for i in range(len(matrix)) for j in range(len(matrix[0]))]
+    else:
+        smaller_paths = generate_all_paths(matrix, buffer_size - 1)
+        paths = []
+        for path in smaller_paths:
+            i, j = path[-1]
+            if len(path) % 2 == 1:
+                # We move horizontally
+                for new_j in range(len(matrix[0])):
+                    if new_j != j:
+                        paths.append(path + [(i, new_j)])
+            else:
+                # We move vertically
+                for new_i in range(len(matrix)):
+                    if new_i != i:
+                        paths.append(path + [(new_i, j)])
+        return paths
+
+def breach_protocol(matrix, sequences, buffer_size):
+    start_time = time.time()
+    max_reward = 0
+    best_buffer = []
+    best_coordinates = []
+
+    # Generate all possible paths
+    paths = generate_all_paths(matrix, buffer_size)
 
     for path in paths:
-        buffer = [matrix[x][y] for x, y in path]
-        total_reward = 0
-        seq_coords = []  # track the coordinates of the sequences found
-        used_coords = set()  # track the coordinates that have been used
+        buffer = [matrix[i][j] for i, j in path]
+        total_reward = sum(reward for seq, reward in sequences if ''.join(seq) in ''.join(buffer))
+        if total_reward > max_reward:
+            max_reward = total_reward
+            best_buffer = buffer
+            best_coordinates = [(i+1, j+1) for i, j in path]
 
-        # check if any sequence in the buffer
-        for seq, weight in rewards.items():
-            for i in range(len(buffer) - len(seq) + 1):
-                if tuple(buffer[i:i+len(seq)]) == seq and all(coord not in used_coords for coord in path[i:i+len(seq)]):
-                    total_reward += weight
-                    seq_coords.extend(path[i:i+len(seq)])
-                    used_coords.update(path[i:i+len(seq)])
+    execution_time = (time.time() - start_time) * 1000 # in ms
 
-        if total_reward > best_reward:
-            best_path, best_reward = seq_coords, total_reward
+    return max_reward, best_buffer, best_coordinates, execution_time
 
-    return best_path, best_reward
-
-def generate_paths(matrix, buffer_size):
-    paths = []
-    for x in range(len(matrix)):
-        for y in range(len(matrix[0])):
-            # generate all possible paths starting from (x, y)
-            paths.extend(generate_paths_from(matrix, buffer_size, x, y, set([(x, y)])))
-    return paths
-
-def generate_paths_from(matrix, buffer_size, x, y, visited):
-    if buffer_size == 1:
-        return [[(x, y)]]
-
-    paths = []
-    for dx, dy in [(0, 1), (1, 0), (0, -1), (-1, 0)]:  # right, down, left, up
-        nx, ny = x + dx, y + dy
-        if 0 <= nx < len(matrix) and 0 <= ny < len(matrix[0]) and (nx, ny) not in visited:
-            for path in generate_paths_from(matrix, buffer_size - 1, nx, ny, visited | {(nx, ny)}):
-                paths.append([(x, y)] + path)
-    return paths
-
-# example usage
 matrix = [
     ["7A", "55", "E9", "E9", "1C", "55"],
     ["55", "7A", "1C", "7A", "E9", "55"],
@@ -60,10 +56,13 @@ sequences = [
 ]
 buffer_size = 7
 
-path, total_reward = breach_protocol(matrix, sequences, buffer_size)
-print(f"Path: {path}")
-print(f"Total reward: {total_reward}")
+# Start from the coordinate (1,1) with value "7A"
+paths = generate_all_paths(matrix, buffer_size)
+paths = [path for path in paths if path[0] == (0, 0)]
 
-print("Elements in the path:")
-for x, y in path:
-    print(matrix[x][y])
+max_reward, best_buffer, best_coordinates, execution_time = breach_protocol(matrix, sequences, buffer_size)
+
+print("Bobot hadiah maksimal:", max_reward)
+print("Isi dari buffer:", ' '.join(best_buffer))
+print("Koordinat dari setiap token secara terurut:", best_coordinates)
+print("Waktu eksekusi program dalam ms:", execution_time)
