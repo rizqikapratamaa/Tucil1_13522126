@@ -1,24 +1,28 @@
 import time
 
-def generate_all_paths(matrix, buffer_size):
+def generate_all_paths(matrix, buffer_size, start=(0,0), is_horizontal=True):
+    i, j = start
     if buffer_size == 1:
-        return [[(i, j)] for i in range(len(matrix)) for j in range(len(matrix[0]))]
+        if is_horizontal:
+            return [[(i, new_j)] for new_j in range(len(matrix[0])) if new_j != j]
+        else:
+            return [[(new_i, j)] for new_i in range(len(matrix)) if new_i != i]
     else:
-        smaller_paths = generate_all_paths(matrix, buffer_size - 1)
         paths = []
-        for path in smaller_paths:
-            i, j = path[-1]
-            if len(path) % 2 == 1:
-                # We move horizontally
-                for new_j in range(len(matrix[0])):
-                    if new_j != j:
-                        paths.append(path + [(i, new_j)])
-            else:
-                # We move vertically
-                for new_i in range(len(matrix)):
-                    if new_i != i:
-                        paths.append(path + [(new_i, j)])
+        if is_horizontal:
+            for new_j in range(len(matrix[0])):
+                if new_j != j:
+                    smaller_paths = generate_all_paths(matrix, buffer_size - 1, start=(i, new_j), is_horizontal=False)
+                    for path in smaller_paths:
+                        paths.append([(i, new_j)] + path)
+        else:
+            for new_i in range(len(matrix)):
+                if new_i != i:
+                    smaller_paths = generate_all_paths(matrix, buffer_size - 1, start=(new_i, j), is_horizontal=True)
+                    for path in smaller_paths:
+                        paths.append([(new_i, j)] + path)
         return paths
+
 
 def breach_protocol(matrix, sequences, buffer_size):
     start_time = time.time()
@@ -26,7 +30,6 @@ def breach_protocol(matrix, sequences, buffer_size):
     best_buffer = []
     best_coordinates = []
 
-    # Generate all possible paths
     paths = generate_all_paths(matrix, buffer_size)
 
     for path in paths:
@@ -56,7 +59,6 @@ sequences = [
 ]
 buffer_size = 7
 
-# Start from the coordinate (1,1) with value "7A"
 paths = generate_all_paths(matrix, buffer_size)
 paths = [path for path in paths if path[0] == (0, 0)]
 
