@@ -9,5 +9,5 @@ Sequence: 7A E9, Reward: 7
 Sequence: 7A 55 7A, Reward: 18
 
 Maximum reward weight: 0
-Tidak ada jalur yang optimal atau tidak ada urutan yang bisa dibentuk.
+There is no optimal path or no sequence that can be formed.
 Program execution time in ms: 0.0 ms

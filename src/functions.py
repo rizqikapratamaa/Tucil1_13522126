@@ -74,7 +74,7 @@ def save_solution(buffer_size, num_sequences, max_reward, best_buffer, best_coor
         file.write("\n")
         if max_reward == 0:
             file.write("Maximum reward weight: 0\n")
-            file.write("Tidak ada jalur yang optimal atau tidak ada urutan yang bisa dibentuk.\n")
+            file.write("There is no optimal path or no sequence that can be formed.\n")
         else:
             file.write(f"Maximum reward weight: {max_reward}\n")
             file.write(f"Contents of the buffer: {' '.join(best_buffer)}\n")
