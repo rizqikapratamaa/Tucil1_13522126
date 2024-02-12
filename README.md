@@ -77,3 +77,6 @@ A Breach Protocol solution program developed in Python. This repository is an ar
     cd src
     python main.py
 
+#### Note
+    Insert file to src/input_file for using file input mode 
+
