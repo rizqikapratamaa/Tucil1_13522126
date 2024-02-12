@@ -54,29 +54,33 @@ def generate_matrix_and_sequence(num_unique_tokens, tokens, buffer_size, matrix_
 
 
 
-def save_solution(max_reward, best_buffer, best_coordinates, execution_time, matrix, sequences):
+def save_solution(buffer_size, num_sequences, max_reward, best_buffer, best_coordinates, execution_time, matrix, sequences):
     folder_path = "../test"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
 
-    filename = input("Masukkan nama file untuk menyimpan solusi: ")
+    filename = input("Input file name to save the solution: ")
     file_path = os.path.join(folder_path, f"{filename}.txt")
     
     with open(file_path, 'w') as file:
-        file.write("Buffer size: 7\n")
+        file.write(f"Buffer size: {buffer_size}\n")
         file.write("Matrix:\n")
         for row in matrix:
             file.write(' '.join(row) + '\n')
-        file.write("Number of Sequences: 3\n")
+        file.write(f"Number of Sequences: {num_sequences}\n")
         file.write("Sequences and Rewards:\n")
         for sequence, reward in sequences:
             file.write(f"Sequence: {' '.join(sequence)}, Reward: {reward}\n")
         file.write("\n")
-        file.write(f"Maximum reward weight: {max_reward}\n")
-        file.write(f"Contents of the buffer: {' '.join(best_buffer)}\n")
-        file.write("Coordinates of each token in order:\n")
-        for coordinate in best_coordinates:
-            file.write(f"{coordinate}\n")
+        if max_reward == 0:
+            file.write("Maximum reward weight: 0\n")
+            file.write("Tidak ada jalur yang optimal atau tidak ada urutan yang bisa dibentuk.\n")
+        else:
+            file.write(f"Maximum reward weight: {max_reward}\n")
+            file.write(f"Contents of the buffer: {' '.join(best_buffer)}\n")
+            file.write("Coordinates of each token in order:\n")
+            for coordinate in best_coordinates:
+                file.write(f"{coordinate}\n")
         file.write(f"Program execution time in ms: {execution_time} ms\n")
 
     print(f"The solution has been saved into {filename}.txt")

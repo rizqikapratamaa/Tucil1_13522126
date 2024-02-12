@@ -1,0 +1,29 @@
+Buffer size: 7
+Matrix:
+1C 55 55 1C 7A BD E9 BD 1C 55
+E9 E9 1C E9 BD BD 7A 55 7A 7A
+E9 55 55 1C 55 1C E9 1C 7A E9
+1C 1C 1C E9 1C 1C E9 E9 E9 7A
+55 55 55 E9 7A 7A E9 55 55 BD
+7A 1C 55 E9 55 1C BD 55 7A 55
+BD 55 1C 1C E9 BD E9 55 BD 7A
+BD 55 BD 1C 1C 7A 7A 1C 7A 55
+E9 1C 7A E9 7A 7A E9 BD BD 55
+1C BD E9 1C E9 E9 1C E9 55 55
+Number of Sequences: 3
+Sequences and Rewards:
+Sequence: BD 1C, Reward: 1
+Sequence: E9 7A 1C BD, Reward: 7
+Sequence: 1C, Reward: 9
+
+Maximum reward weight: 17
+Contents of the buffer: 55 E9 E9 7A 1C BD 1C
+Coordinates of each token in order:
+(1, 2)
+(2, 2)
+(2, 1)
+(6, 1)
+(6, 2)
+(10, 2)
+(10, 1)
+Program execution time in ms: 50513.65923881531 ms

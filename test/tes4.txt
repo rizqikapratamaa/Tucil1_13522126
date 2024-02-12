@@ -1,0 +1,13 @@
+Buffer size: 3
+Matrix:
+7A 55
+BD E9
+Number of Sequences: 3
+Sequences and Rewards:
+Sequence: 55 BD 55, Reward: 25
+Sequence: 7A E9, Reward: 7
+Sequence: 7A 55 7A, Reward: 18
+
+Maximum reward weight: 0
+Tidak ada jalur yang optimal atau tidak ada urutan yang bisa dibentuk.
+Program execution time in ms: 0.0 ms

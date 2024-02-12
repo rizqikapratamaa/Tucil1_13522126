@@ -67,13 +67,18 @@ def file_mode():
 
         max_reward, best_buffer, best_coordinates, execution_time = functions.breach_protocol(matrix, sequences_rewards, buffer_size)
         print()
-        print("Maximum reward weight: ", max_reward)
-        print("Contents of the buffer: ", ' '.join(best_buffer))
-        print("Coordinates of each token in order: ")
-        for i in range(len(best_coordinates)):
-            print(best_coordinates[i])
-        print("Program execution time in ms: ", execution_time)
-        print()
+
+        if max_reward == 0:
+            print("Maximum reward weight: ", max_reward)
+            print("Tidak ada jalur yang optimal atau tidak ada urutan yang bisa dibentuk.")
+        else:
+            print("Maximum reward weight: ", max_reward)
+            print("Contents of the buffer: ", ' '.join(best_buffer))
+            print("Coordinates of each token in order: ")
+            for i in range(len(best_coordinates)):
+                print(best_coordinates[i])
+            print("Program execution time in ms: ", execution_time)
+            print()
 
         save = input("Do you want to save the solution? (y/n): ")
 
@@ -123,6 +128,7 @@ def manual_mode():
             except ValueError:
                 print("Invalid input. Please enter two integers separated by space.")
 
+
         while True:
             try:
                 num_sequences = int(input("Enter the number of sequences: "))
@@ -155,18 +161,23 @@ def manual_mode():
 
         max_reward, best_buffer, best_coordinates, execution_time = functions.breach_protocol(matrix, sequences_rewards, buffer_size)
         print()
-        print("Maximum reward weight: ", max_reward)
-        print("Contents of the buffer: ", ' '.join(best_buffer))
-        print("Coordinates of each token in order: ")
-        for i in range(len(best_coordinates)):
-            print(best_coordinates[i])
-        print("Program execution time in ms: ", execution_time)
-        print()
+
+        if max_reward == 0:
+            print("Maximum reward weight: ", max_reward)
+            print("Tidak ada jalur yang optimal atau tidak ada urutan yang bisa dibentuk.")
+        else:
+            print("Maximum reward weight: ", max_reward)
+            print("Contents of the buffer: ", ' '.join(best_buffer))
+            print("Coordinates of each token in order: ")
+            for i in range(len(best_coordinates)):
+                print(best_coordinates[i])
+            print("Program execution time in ms: ", execution_time)
+            print()
 
         save = input("Do you want to save the solution? (y/n): ")
 
         if save == 'y' or save == 'Y':
-            functions.save_solution(max_reward, best_buffer, best_coordinates, execution_time, matrix, sequences_rewards)
+            functions.save_solution(buffer_size,num_sequences , max_reward, best_buffer, best_coordinates, execution_time, matrix, sequences_rewards)
     
     except ValueError as e:
         print("Error:", e)
